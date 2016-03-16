@@ -99,7 +99,8 @@ public class CurrencyConversionWS {
 //        catch (IllegalArgumentException iae) {
 //            return -1;
 //        }
-//Modified code to fetch exchange rate from REST API.
+            //Modified code to fetch exchange rate from REST API.
+            System.out.println(cur1 +" "+cur2);
             URL url = new URL("http://api.fixer.io/latest?base="+cur1+"&symbols="+cur2);
             HttpURLConnection connURL = (HttpURLConnection) url.openConnection();
             connURL.setRequestMethod("GET");
@@ -115,11 +116,14 @@ public class CurrencyConversionWS {
             //add carriage return for clarity (not required for parsing)
             sb.append("\n");  }
             
-            //System.out.println(sb.toString());
             //Convert to json object
             JsonReader jsonReader = Json.createReader(new StringReader(sb.toString()));
             JsonObject object = jsonReader.readObject();
-            String value= object.getJsonObject("rates").get(cur2).toString();
+            String value= "1";
+            System.out.println(object.getJsonObject("rates").isEmpty());
+            if (!(object.getJsonObject("rates").isEmpty())) {
+            value = object.getJsonObject("rates").get(cur2).toString();
+        }
             jsonReader.close();
             
             //make sure you close the stream and the connection
